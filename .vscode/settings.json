@@ -22,6 +22,7 @@
     "cmath": "cpp",
     "variant": "cpp",
     "iosfwd": "cpp",
-    "iomanip": "cpp"
+    "iomanip": "cpp",
+    "thread": "cpp"
   }
 }
