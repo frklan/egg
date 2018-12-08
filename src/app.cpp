@@ -39,7 +39,7 @@ namespace yellowfortyfourcom {
       std::stringstream inputtime(time);
       inputtime >> std::get_time(&t, "%H:%M");
       
-      timer = std::make_unique<yellowfortyfourcom::Timer>(t);
+      timer = std::make_unique<yellowfortyfourcom::Timer>(t, [](const std::tm){ std::cout << "\rTime's up!\n"; });
 
     } catch(po::error& e) { 
       std::cerr << "ERROR: " << e.what() << std::endl << std::endl; 

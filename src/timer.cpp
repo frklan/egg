@@ -8,7 +8,8 @@
 namespace yellowfortyfourcom {
   using namespace std::chrono_literals;
 
-  Timer::Timer(std::tm& at) : 
+  Timer::Timer(std::tm& at, std::function<void(const std::tm&)> callBack) : 
+  cb(callBack),
   alarmTime(at)
   { 
     //std::cout << "Timer created: " << alarmTime.tm_hour << ":" << alarmTime.tm_min << std::endl;
@@ -19,7 +20,8 @@ namespace yellowfortyfourcom {
       auto now = getCurrentTime();
       
       if(alarmTime.tm_hour <= now->tm_hour && alarmTime.tm_min <= now->tm_min) {
-        std::cout << "\rTime's up!\n";
+        std::cout << '\r' << std::flush;
+        cb(alarmTime);
         break;
       } else {
       std::cout << '\r' 
@@ -29,9 +31,10 @@ namespace yellowfortyfourcom {
         << ":" 
         << std::setfill('0') << std::setw(2) << now->tm_sec 
         << std::flush;
-      std::this_thread::sleep_for(500ms);
+        std::this_thread::sleep_for(500ms);
       }
     }
+    std::cout << std::endl;
     return 0;
   }
 
