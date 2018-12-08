@@ -1,0 +1,27 @@
+{
+  "files.associations": {
+    "__config": "cpp",
+    "__nullptr": "cpp",
+    "cstddef": "cpp",
+    "exception": "cpp",
+    "initializer_list": "cpp",
+    "new": "cpp",
+    "stdexcept": "cpp",
+    "type_traits": "cpp",
+    "typeinfo": "cpp",
+    "limits": "cpp",
+    "algorithm": "cpp",
+    "memory": "cpp",
+    "iostream": "cpp",
+    "cctype": "cpp",
+    "cstdio": "cpp",
+    "cstdlib": "cpp",
+    "cwchar": "cpp",
+    "cwctype": "cpp",
+    "cfenv": "cpp",
+    "cmath": "cpp",
+    "variant": "cpp",
+    "iosfwd": "cpp",
+    "iomanip": "cpp"
+  }
+}
