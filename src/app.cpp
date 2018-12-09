@@ -39,7 +39,7 @@ namespace yellowfortyfourcom {
 
       std::tm t;
       std::stringstream inputtime(time);
-      inputtime >> std::get_time(&t, "%H:%M");
+      inputtime >> std::get_time(&t, "%H:%M:%S");
       
       timer = std::make_unique<yellowfortyfourcom::Timer>(t, [this](const std::tm){ timesUp(); });
 

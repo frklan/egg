@@ -19,7 +19,7 @@ namespace yellowfortyfourcom {
     while(1) {
       auto now = getCurrentTime();
       
-      if(alarmTime.tm_hour <= now->tm_hour && alarmTime.tm_min <= now->tm_min) {
+      if(alarmTime.tm_hour <= now->tm_hour && alarmTime.tm_min <= now->tm_min && alarmTime.tm_sec <= now->tm_sec) {
         std::cout << '\r' << std::flush;
         cb(alarmTime);
         break;
