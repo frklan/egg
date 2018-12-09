@@ -6,9 +6,11 @@
 #include <sstream>
 #include <iomanip>
 #include <string>
+#include <exception>
 
 #include "boost/program_options.hpp"
 #include "app.h"
+#include "sdl.h"
 
 namespace yellowfortyfourcom {
 
@@ -39,13 +41,24 @@ namespace yellowfortyfourcom {
       std::stringstream inputtime(time);
       inputtime >> std::get_time(&t, "%H:%M");
       
-      timer = std::make_unique<yellowfortyfourcom::Timer>(t, [](const std::tm){ std::cout << "\rTime's up!\n"; });
+      timer = std::make_unique<yellowfortyfourcom::Timer>(t, [this](const std::tm){ timesUp(); });
 
     } catch(po::error& e) { 
       std::cerr << "ERROR: " << e.what() << std::endl << std::endl; 
       std::cerr << desc << std::endl;
       exit(-1);
     } 
+  }
+
+  void App::timesUp() {
+    std::cout << "\rTime's up!\n";
+    
+    try { 
+      yellowfortyfourcom::SDL sdl{};
+      sdl.play();
+    } catch(std::exception& e) {
+      std::cerr << e.what();
+    }
   }
 
   int App::run() {

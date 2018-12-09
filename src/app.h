@@ -19,6 +19,7 @@ namespace yellowfortyfourcom {
     private:
       void parseCmdOptions(int argc, char** argv);
       std::unique_ptr<std::tm> getCurrentTime();
+      void timesUp();
 
       std::unique_ptr<yellowfortyfourcom::Timer> timer;
   };
