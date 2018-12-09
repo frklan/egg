@@ -23,6 +23,7 @@
     "variant": "cpp",
     "iosfwd": "cpp",
     "iomanip": "cpp",
-    "thread": "cpp"
+    "thread": "cpp",
+    "vector": "cpp"
   }
 }

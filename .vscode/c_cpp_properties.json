@@ -7,6 +7,8 @@
                 "/usr/local/include",
                 "/usr/include",
                 "/usr/local/Cellar/gcc/7.2.0/include/c++/7.2.0/include",
+                "/Library/Frameworks/SDL2.framework/Headers/",
+                "/Library/Frameworks/SDL2_mixer.framework/Headers/",
                 "./"
             ],
             "defines": [],
