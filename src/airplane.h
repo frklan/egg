@@ -1,4 +1,7 @@
 #pragma once
+//
+// Sound borrowed from https://www.drodd.com/html4/sound-effects2.html
+//
 // $ xxd -i airplane_chime_x.wav
 
 #include <vector>
