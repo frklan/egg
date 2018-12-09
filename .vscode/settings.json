@@ -24,6 +24,7 @@
     "iosfwd": "cpp",
     "iomanip": "cpp",
     "thread": "cpp",
-    "vector": "cpp"
+    "vector": "cpp",
+    "ctime": "cpp"
   }
 }
