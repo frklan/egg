@@ -9,6 +9,9 @@
 
 
 namespace yellowfortyfourcom {
+  
+  const std::string APP_VERSION = "v0.1.0";
+
   class App {
     public:
       App() = delete;

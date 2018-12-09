@@ -21,7 +21,8 @@ namespace yellowfortyfourcom {
     namespace po = boost::program_options; 
     po::options_description desc("Options"); 
     desc.add_options() 
-      ("help", "Print help messages") 
+      ("help", "Print help messages")
+      ("version,v", "show version")
       ("time", po::value<std::string>(&time)->required(), "alarm time");
     
     po::positional_options_description positionalOptions; 
@@ -32,9 +33,13 @@ namespace yellowfortyfourcom {
       po::store(po::command_line_parser(argc, argv).options(desc).positional(positionalOptions).run(), vm);
 
       if(vm.count("help")) { 
-        std::cout << "Basic Command Line Parameter App" << std::endl << desc << std::endl; 
+        std::cout << "Usage:\n\tegg [options] [time]\n" << std::endl << desc << std::endl; 
         exit(0); 
       } 
+      if(vm.count("version")) {
+        std::cout << "egg " << APP_VERSION << " (C) 2018 Fredrik Andersson" << std::endl;
+        exit(0);
+      }
       po::notify(vm); // throws on error, so do after help in case there are any problems 
 
       std::tm t;
