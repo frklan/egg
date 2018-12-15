@@ -59,7 +59,6 @@ namespace yellowfortyfourcom {
     } 
   }
 
-
   std::time_t App::getAlarmTimeFromAbsoluteString(const std::string& timeString) {
     std::regex hhmmss("^((?:[0-1][0-9])|(?:[2][0-3])):([0-5][0-9]):([0-5][0-9])$"); // HH:MM:SS
     std::smatch match;
@@ -107,16 +106,10 @@ namespace yellowfortyfourcom {
     } else {
       std::cerr << "invalid input!" << std::endl;
       exit(-1);
-    }
-    std::cout << "h = " << h.count() << ", mm = " << mm.count() << ", s = " << s.count() << std::endl;
-    
+    }  
     std::chrono::duration<long long> alarmOffset = h + mm + s;
-    std::cout << "alarm is in " << alarmOffset.count() << " seconds" << std::endl;
 
     return std::chrono::system_clock::to_time_t(std::chrono::system_clock::now() + alarmOffset);
-    
-    //std::cout << std::put_time(std::localtime(&time_t_alarm), "%Y %b %d %H:%M:%S") << std::endl;
-
   }
 
   void App::timesUp() {
@@ -133,5 +126,4 @@ namespace yellowfortyfourcom {
   int App::run() {
     return timer->run();
   }
-
 }
