@@ -44,18 +44,13 @@ namespace yellowfortyfourcom {
       }
       po::notify(vm); // throws on error, so do after help in case there are any problems 
 
-      std::tm* tm = nullptr;
+      std::time_t alarmTime;
       if(vm.count("-r")) {
-        std::time_t tp = parseAbsoluteAlarmTimeFromString(time);
-        tm = std::localtime(&tp);
-        std::cout << std::put_time(std::localtime(&tp), "%Y %b %d %H:%M:%S") << std::endl;
-        
+        alarmTime = getAlarmTimeFromRelativeString(time);    
       } else {
-        tm = new std::tm; // this will leak!
-        std::stringstream inputtime(time);
-        inputtime >> std::get_time(tm, "%H:%M:%S");
+        alarmTime = getAlarmTimeFromAbsoluteString(time);
       }
-      timer = std::make_unique<yellowfortyfourcom::Timer>(*tm, [this](const std::tm){ timesUp(); });
+      timer = std::make_unique<yellowfortyfourcom::Timer>(alarmTime, [this](const std::time_t){ timesUp(); });
 
     } catch(po::error& e) { 
       std::cerr << "ERROR: " << e.what() << std::endl << std::endl; 
@@ -64,8 +59,33 @@ namespace yellowfortyfourcom {
     } 
   }
 
-  std::time_t App::parseAbsoluteAlarmTimeFromString(const std::string& timeString) {
-    std::regex hhmmss("^([0-9]*):([0-5][0-9]):([0-5][0-9])$"); // HH:MM:SS
+
+  std::time_t App::getAlarmTimeFromAbsoluteString(const std::string& timeString) {
+    std::regex hhmmss("^((?:[0-1][0-9])|(?:[2][0-3])):([0-5][0-9]):([0-5][0-9])$"); // HH:MM:SS
+    std::smatch match;
+    
+    if(regex_match(timeString, match, hhmmss)) {
+      auto h = std::chrono::hours(atoi(match[1].str().c_str()));
+      auto mm = std::chrono::minutes(atoi(match[2].str().c_str()));
+      auto s = std::chrono::seconds(atoi(match[3].str().c_str()));
+        
+      using days = std::chrono::duration<int, std::ratio<86400>>;
+      auto midnight = std::chrono::time_point_cast<days>(std::chrono::system_clock::now()).time_since_epoch();
+
+      auto alarmTime = midnight + h + mm + s;
+      
+      // alarm is now in local time, we need to "cast" it to GMT
+      std::time_t a = alarmTime.count();
+      auto gmt = std::gmtime(&a);
+      
+      // now return it as time_t
+      return mktime(gmt);
+    }
+    throw new std::runtime_error("Invalid time");
+  }
+
+  std::time_t App::getAlarmTimeFromRelativeString(const std::string& timeString) {
+    std::regex hhmmss("^([0-9]*):([0-5][0-9]):([0-5][0-9])$"); // HHH:MM:SS
     std::regex mmss("^([0-9]*):([0-5][0-9])$"); // MM:SS
     std::regex ss ("^([0-9]*)$"); // SS
 

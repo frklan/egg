@@ -21,7 +21,8 @@ namespace yellowfortyfourcom {
 
     private:
       void parseCmdOptions(int argc, char** argv);
-      std::time_t parseAbsoluteAlarmTimeFromString(const std::string& timeString);
+      std::time_t getAlarmTimeFromRelativeString(const std::string& timeString);
+      std::time_t getAlarmTimeFromAbsoluteString(const std::string& timeString);
 
       std::unique_ptr<std::tm> getCurrentTime();
       void timesUp();

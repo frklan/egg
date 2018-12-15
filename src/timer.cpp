@@ -8,7 +8,7 @@
 namespace yellowfortyfourcom {
   using namespace std::chrono_literals;
 
-  Timer::Timer(std::tm& at, std::function<void(const std::tm&)> callBack) : 
+  Timer::Timer(std::time_t& at, std::function<void(const std::time_t&)> callBack) : 
   cb(callBack),
   alarmTime(at)
   { 
@@ -19,17 +19,13 @@ namespace yellowfortyfourcom {
     while(1) {
       auto now = getCurrentTime();
       
-      if(alarmTime.tm_hour <= now->tm_hour && alarmTime.tm_min <= now->tm_min && alarmTime.tm_sec <= now->tm_sec) {
+      if(alarmTime <= now) {
         std::cout << '\r' << std::flush;
         cb(alarmTime);
         break;
       } else {
       std::cout << '\r' 
-        << std::setfill('0') << std::setw(2) << now->tm_hour 
-        << ":" 
-        << std::setfill('0') << std::setw(2) << now->tm_min 
-        << ":" 
-        << std::setfill('0') << std::setw(2) << now->tm_sec 
+        << std::put_time(std::localtime(&now), "%H:%M:%S")  
         << std::flush;
         std::this_thread::sleep_for(500ms);
       }
@@ -38,19 +34,10 @@ namespace yellowfortyfourcom {
     return 0;
   }
 
-  std::unique_ptr<std::tm> Timer::getCurrentTime() {
-    auto now = std::make_unique<std::tm>();
-    auto t = std::time(0); 
-    auto l = std::localtime(&t);
-    now->tm_sec = l->tm_sec;
-    now->tm_min = l->tm_min;
-    now->tm_hour = l->tm_hour;
-    now->tm_mday = l->tm_mday;
-    now->tm_mon  = l->tm_mon;
-    now->tm_year = l->tm_year; 
-    now->tm_wday = l->tm_wday;
-    now->tm_yday = l->tm_yday;
-    now->tm_isdst = l->tm_isdst;
-    return now;
+  std::time_t Timer::getCurrentTime() {
+    using sec = std::chrono::duration<int, std::ratio<1>>;
+    auto now = std::chrono::time_point_cast<sec>(std::chrono::system_clock::now()).time_since_epoch();
+   
+    return now.count();
   }
 }

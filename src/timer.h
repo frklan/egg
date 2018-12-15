@@ -6,13 +6,13 @@ namespace yellowfortyfourcom {
   class Timer {
     public:
       Timer() = delete;
-      Timer(std::tm& alarmTime, std::function<void(const std::tm&)> = [](std::tm t) {});
+      Timer(std::time_t& alarmTime, std::function<void(const std::time_t&)> = [](std::time_t t) {});
 
       int run();
 
     private:
-      std::unique_ptr<std::tm> getCurrentTime();
-      std::function<void(std::tm)> cb;
-      std::tm alarmTime;
+      std::time_t getCurrentTime();
+      std::function<void(std::time_t&)> cb;
+      std::time_t alarmTime;
   };
 }
