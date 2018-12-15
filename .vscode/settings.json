@@ -25,6 +25,9 @@
     "iomanip": "cpp",
     "thread": "cpp",
     "vector": "cpp",
-    "ctime": "cpp"
+    "ctime": "cpp",
+    "string": "cpp",
+    "chrono": "cpp",
+    "regex": "cpp"
   }
 }

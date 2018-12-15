@@ -9,7 +9,7 @@
       "type": "cppdbg",
       "request": "launch",
       "program": "${workspaceFolder}/egg",
-      "args": [],
+      "args": ["10:00"],
       "stopAtEntry": true,
       "cwd": "${workspaceFolder}",
       "environment": [],
