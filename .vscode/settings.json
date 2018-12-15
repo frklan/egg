@@ -28,6 +28,7 @@
     "ctime": "cpp",
     "string": "cpp",
     "chrono": "cpp",
-    "regex": "cpp"
+    "regex": "cpp",
+    "ostream": "cpp"
   }
 }
