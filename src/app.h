@@ -10,7 +10,7 @@
 
 namespace yellowfortyfourcom {
   
-  const std::string APP_VERSION = "v0.1.0";
+  const std::string APP_VERSION = "v0.2.0";
 
   class App {
     public:
