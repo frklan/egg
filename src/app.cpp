@@ -52,7 +52,7 @@ namespace yellowfortyfourcom {
       }
       timer = std::make_unique<yellowfortyfourcom::Timer>(alarmTime, [this](const std::time_t){ timesUp(); });
 
-    } catch(po::error& e) { 
+    } catch(std::exception& e) { 
       std::cerr << "ERROR: " << e.what() << std::endl << std::endl; 
       std::cerr << desc << std::endl;
       exit(-1);
@@ -80,7 +80,7 @@ namespace yellowfortyfourcom {
       // now return it as time_t
       return mktime(gmt);
     }
-    throw new std::runtime_error("Invalid time");
+    throw std::runtime_error("Invalid time");
   }
 
   std::time_t App::getAlarmTimeFromRelativeString(const std::string& timeString) {
