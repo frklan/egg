@@ -4,7 +4,7 @@ A bare bones alarm clock/egg timer made in C++.
 
 While learning C++ I needed a small project; ended up with this. It will actually be kind of usefull timing my eggs..
 
-Currently it will only fire the alarm at an absolute time, e.g. 12:15:35. I'm planning to add a relative mode as well, just need to understand the clock/time system a bit better.
+Default mode is to fire the alarm at an absolute time, e.g. 12:15:35. Option ````-r```` will switch to relative mode, i.e. ````$ ./egg -r 12:19:00```` sets the alarm to 12 hours, 19 minutes from current time. 
 
 ## Compiling
 
