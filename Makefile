@@ -16,8 +16,8 @@ ifeq ($(shell uname -s), Darwin)
 	sdlheader = -I /Library/Frameworks/SDL2.framework/Headers \
 		-I /Library/Frameworks/SDL2_mixer.framework/Headers
 else
-	libgl = -lsdl2 -lsdl_mixer
-	sdlheader = /usr/local/include
+	libsdl = -lSDL2 -lSDL2_mixer
+	sdlheader = -I /usr/include/SDL2
 endif
 
 
