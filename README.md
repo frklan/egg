@@ -14,9 +14,13 @@ You'll need
 - SDL2 (base and mixer package)
 - Boost/Program Options
 
-Clone the repo and run ````$ ./build.sh```` in the base directory.
+Clone the repo and do the following in the base directory to compile, install and run.
 
-Currently I've setup the build script assuming that SDL is installed in ````Library/Frameworks````. I might use a propper build system later on..
+````
+$ make
+$ make install
+$ egg [alarm time]
+```` 
 
 ## Contributing
 
