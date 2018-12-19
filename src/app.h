@@ -23,6 +23,7 @@ namespace yellowfortyfourcom {
       void parseCmdOptions(int argc, char** argv);
       std::time_t getAlarmTimeFromRelativeString(const std::string& timeString);
       std::time_t getAlarmTimeFromAbsoluteString(const std::string& timeString);
+      bool checkSoundFileExist(std::string soundFile);
 
       std::unique_ptr<std::tm> getCurrentTime();
       void timesUp();
@@ -31,5 +32,7 @@ namespace yellowfortyfourcom {
       std::string time;
       bool doRelativeTime = false;
       bool doPlaySound = true;
+      bool doCustomSound = false;
+      std::string soundFile;
   };
 }

@@ -8,6 +8,7 @@
 #include <string>
 #include <exception>
 #include <regex>
+#include <fstream>
 
 #include "boost/program_options.hpp"
 #include "app.h"
@@ -24,7 +25,8 @@ namespace yellowfortyfourcom {
       ("version,v", "show version")
       (",r", "use relative time")
       (",q", "quite mode, no alarm sound played")
-      ("time", po::value<std::string>(&time)->required(), "alarm time");
+      ("time", po::value<std::string>(&time)->required(), "alarm time")
+      ("sound", po::value<std::string>(&soundFile), "path to alarm sound");
     
     po::positional_options_description positionalOptions; 
     positionalOptions.add("time", 1); 
@@ -49,6 +51,10 @@ namespace yellowfortyfourcom {
 
       if(vm.count("-q")) {
         doPlaySound = false;
+      }
+
+      if(!soundFile.empty() && checkSoundFileExist(soundFile)) {
+        doCustomSound = true;
       }
 
     } catch(std::exception& e) { 
@@ -110,6 +116,15 @@ namespace yellowfortyfourcom {
 
     return std::chrono::system_clock::to_time_t(std::chrono::system_clock::now() + alarmOffset);
   }
+  bool App::checkSoundFileExist(std::string soundFile) {
+    //return true;
+    std::ifstream f(soundFile.c_str());
+    bool fileExists =  f.good();
+    if(!fileExists) { 
+      std::cerr << "File " << soundFile << " does not exits, using default sound!" << std::endl;
+    }
+    return fileExists;
+  }
 
   void App::timesUp() {
     std::cout << "\rTime's up!\n";
@@ -120,10 +135,20 @@ namespace yellowfortyfourcom {
     
     try { 
       yellowfortyfourcom::SDL sdl{};
+      
+      if(doCustomSound && checkSoundFileExist(soundFile)) {
+        try{
+          sdl.loadSoundfromFile(soundFile); 
+        } catch(SdlMixerSoundLoadException& e){
+          std::cerr << "Could not load " << soundFile << ", using default audio." << std::endl;
+        }
+      }
+
       sdl.play();
+
     } catch(std::exception& e) {
       std::cerr << e.what();
-    }
+    }   
   }
 
   int App::run() {
