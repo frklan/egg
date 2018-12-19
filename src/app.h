@@ -6,6 +6,7 @@
 #include <ctime>
 
 #include "timer.h"
+#include "sdl.h"
 
 
 namespace yellowfortyfourcom {
@@ -27,8 +28,8 @@ namespace yellowfortyfourcom {
 
       std::unique_ptr<std::tm> getCurrentTime();
       void timesUp();
-
-      //std::unique_ptr<yellowfortyfourcom::Timer> timer;
+      
+      std::unique_ptr<SDL> sdl;
       std::string time;
       bool doRelativeTime = false;
       bool doPlaySound = true;

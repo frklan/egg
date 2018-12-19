@@ -53,7 +53,7 @@ namespace yellowfortyfourcom {
         doPlaySound = false;
       }
 
-      if(!soundFile.empty() && checkSoundFileExist(soundFile)) {
+      if(!soundFile.empty()) {
         doCustomSound = true;
       }
 
@@ -116,6 +116,7 @@ namespace yellowfortyfourcom {
 
     return std::chrono::system_clock::to_time_t(std::chrono::system_clock::now() + alarmOffset);
   }
+
   bool App::checkSoundFileExist(std::string soundFile) {
     //return true;
     std::ifstream f(soundFile.c_str());
@@ -127,24 +128,12 @@ namespace yellowfortyfourcom {
   }
 
   void App::timesUp() {
-    std::cout << "\rTime's up!\n";
-    
-    if(!doPlaySound) {
-      return;
-    }
+    std::cout << "Time's up!" << std::flush;
     
     try { 
-      yellowfortyfourcom::SDL sdl{};
-      
-      if(doCustomSound && checkSoundFileExist(soundFile)) {
-        try{
-          sdl.loadSoundfromFile(soundFile); 
-        } catch(SdlMixerSoundLoadException& e){
-          std::cerr << "Could not load " << soundFile << ", using default audio." << std::endl;
-        }
-      }
-
-      sdl.play();
+      if(doPlaySound) {
+        sdl->play();
+      }      
 
     } catch(std::exception& e) {
       std::cerr << e.what();
@@ -152,16 +141,28 @@ namespace yellowfortyfourcom {
   }
 
   int App::run() {
-    std::time_t alarmTime;
+    try {
+      sdl = std::make_unique<SDL>();
+    } catch(SdlInitException& e) {
+      std::cerr << "Fatal error: unable to init SDL lib" << std::endl;
+      exit(-1);
+    }
 
+    try{
+      if(doCustomSound && checkSoundFileExist(soundFile)) { 
+        sdl->loadSoundfromFile(soundFile); 
+      }
+    } catch(SdlMixerSoundLoadException& e){
+      std::cerr << "Could not load " << soundFile << ", using default audio." << std::endl;
+    }
+
+    std::time_t alarmTime;
     if(doRelativeTime) {
       alarmTime = getAlarmTimeFromRelativeString(time);    
     } else {
       alarmTime = getAlarmTimeFromAbsoluteString(time);
     }
     auto timer = yellowfortyfourcom::Timer(alarmTime, [this](const std::time_t){ timesUp(); });
-
-
     return timer.run();
   }
 }
