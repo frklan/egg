@@ -30,5 +30,6 @@ namespace yellowfortyfourcom {
       //std::unique_ptr<yellowfortyfourcom::Timer> timer;
       std::string time;
       bool doRelativeTime = false;
+      bool doPlaySound = true;
   };
 }

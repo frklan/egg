@@ -23,6 +23,7 @@ namespace yellowfortyfourcom {
       ("help", "Print help messages")
       ("version,v", "show version")
       (",r", "use relative time")
+      (",q", "quite mode, no alarm sound played")
       ("time", po::value<std::string>(&time)->required(), "alarm time");
     
     po::positional_options_description positionalOptions; 
@@ -44,6 +45,10 @@ namespace yellowfortyfourcom {
 
       if(vm.count("-r")) {
           doRelativeTime = true;
+      }
+
+      if(vm.count("-q")) {
+        doPlaySound = false;
       }
 
     } catch(std::exception& e) { 
@@ -108,6 +113,10 @@ namespace yellowfortyfourcom {
 
   void App::timesUp() {
     std::cout << "\rTime's up!\n";
+    
+    if(!doPlaySound) {
+      return;
+    }
     
     try { 
       yellowfortyfourcom::SDL sdl{};
