@@ -16,8 +16,6 @@
 namespace yellowfortyfourcom {
 
   App::App(int argc, char** argv) {
-    std::string time;
-
     // Define and parse the program options  
     namespace po = boost::program_options; 
     po::options_description desc("Options"); 
@@ -44,13 +42,9 @@ namespace yellowfortyfourcom {
       }
       po::notify(vm); // throws on error, so do after help in case there are any problems 
 
-      std::time_t alarmTime;
       if(vm.count("-r")) {
-        alarmTime = getAlarmTimeFromRelativeString(time);    
-      } else {
-        alarmTime = getAlarmTimeFromAbsoluteString(time);
+          doRelativeTime = true;
       }
-      timer = std::make_unique<yellowfortyfourcom::Timer>(alarmTime, [this](const std::time_t){ timesUp(); });
 
     } catch(std::exception& e) { 
       std::cerr << "ERROR: " << e.what() << std::endl << std::endl; 
@@ -124,6 +118,16 @@ namespace yellowfortyfourcom {
   }
 
   int App::run() {
-    return timer->run();
+    std::time_t alarmTime;
+
+    if(doRelativeTime) {
+      alarmTime = getAlarmTimeFromRelativeString(time);    
+    } else {
+      alarmTime = getAlarmTimeFromAbsoluteString(time);
+    }
+    auto timer = yellowfortyfourcom::Timer(alarmTime, [this](const std::time_t){ timesUp(); });
+
+
+    return timer.run();
   }
 }
